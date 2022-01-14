@@ -2,46 +2,37 @@
 
 namespace App;
 
-use App\Exceptions\ErrorArgumentExeption;
-use App\Exceptions\ExceptionAbstract;
-use App\Exceptions\FileNotFoundExeprion;
-use App\Exceptions\InvalidFileExeption;
-use App\Exceptions\RuntimeFileExeption;
+use App\Exceptions;
 use App\Helper\FileHelper;
 use App\Parser\Parser;
 use App\Presenter\ConsolePresenter;
 use App\Presenter\Printer\JSONPrinter;
-use Exception;
 
 class Application
 {
     /**
-     * @throws ExceptionAbstract
+     * @throws Exceptions\ExceptionAbstract
      */
     public function start(?string $fileName)
     {
         if (empty($fileName)) {
-            throw new ErrorArgumentExeption();
+            throw new Exceptions\ErrorArgumentExeption();
         }
 
         $fileHelper = new FileHelper();
 
         if (!$fileHelper->isExist($fileName)) {
-            throw new FileNotFoundExeprion();
+            throw new Exceptions\FileNotFoundExeprion();
         }
 
         if (!$fileHelper->isReadable($fileName)) {
-            throw new InvalidFileExeption();
+            throw new Exceptions\InvalidFileExeption();
         }
 
         $stream = $fileHelper->getStream($fileName);
-        $parser = new Parser($fileHelper);
 
-        try {
-            $information = $parser->parse($stream);
-        } catch (Exception $ex) {
-            throw new RuntimeFileExeption();
-        }
+        $parser = new Parser($fileHelper);
+        $information = $parser->parse($stream);
 
         $printer = new JSONPrinter();
         $presenter = new ConsolePresenter($printer);

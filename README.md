@@ -3,7 +3,7 @@ PHP Http Logs Analyzer
 
 Описание
 -----
-Данная программа для анализа acess log файлов.
+Данная программа предназначена для анализа acess log файлов.
 
 Необходимые компоненты
 -----
@@ -19,7 +19,7 @@ composer install
 Запуск
 -----
 ```shell
-php parser.php ./acess_log
+php parser.php ./example/acess_log
 ```
 
 Вывод

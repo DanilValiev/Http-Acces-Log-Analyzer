@@ -4,7 +4,6 @@ namespace App\Parser;
 
 use App\Helper\FileHelperInterface;
 use App\Models\Information;
-use Exception;
 
 class Parser implements ParserInterface
 {
@@ -29,9 +28,6 @@ class Parser implements ParserInterface
         $this->fileHelper = $fileHelper;
     }
 
-    /**
-     * @throws Exception
-     */
     public function parse($stream): Information
     {
         $information = new Information;
@@ -44,20 +40,18 @@ class Parser implements ParserInterface
             preg_match(self::TRAFFIC_PATTERN, $string, $traffic);
             preg_match(self::CODE_PATTERN, $string, $code);
 
-            $googleBot = preg_match(self::GOOGLE_PATTERN, $string);
-            $bingBot = preg_match(self::BING_PATTERN, $string);
-            $baiduBot = preg_match(self::BAIDU_PATTERN, $string);
-            $yandexBot = preg_match(self::YANDEX_PATTERN, $string);
-
             if (!empty($urls[1]) && !empty($code[1])) {
 
-                if ($googleBot) {
+                if (preg_match(self::GOOGLE_PATTERN, $string)) {
                     $crawlers->addGoogle();
-                } else if ($bingBot) {
+                }
+                else if (preg_match(self::BING_PATTERN, $string)) {
                     $crawlers->addBing();
-                } else if ($baiduBot) {
+                }
+                else if (preg_match(self::BAIDU_PATTERN, $string)) {
                     $crawlers->addBaidu();
-                } else if ($yandexBot) {
+                }
+                else if (preg_match(self::YANDEX_PATTERN, $string)) {
                     $crawlers->addYandex();
                 }
 

@@ -42,10 +42,6 @@ class Parser implements ParserInterface
 
             if (!empty($urls[1]) && !empty($code[1])) {
 
-                if ($code[1] === '301') {
-                    $traffic[1] = 0;
-                }
-
                 if (preg_match(self::GOOGLE_PATTERN, $string)) {
                     $crawlers->addGoogle();
                 }
